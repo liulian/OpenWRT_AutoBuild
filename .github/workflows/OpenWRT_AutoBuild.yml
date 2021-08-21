@@ -1,0 +1,74 @@
+name: 自动构建编译OpenWRT
+
+on: workflow_dispatch
+
+jobs:
+  自动构建编译OpenWRT:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: 准备编译环境
+        run: |
+          sudo apt -y update && sudo apt -y full-upgrade
+          sudo apt -y install \
+            build-essential \
+            asciidoc \
+            binutils \
+            bzip2 \
+            gawk \
+            gettext \
+            git \
+            libncurses5-dev \
+            libz-dev \
+            patch \
+            python3 \
+            python2.7 \
+            unzip \
+            zlib1g-dev \
+            lib32gcc1 \
+            libc6-dev-i386 \
+            subversion \
+            flex \
+            uglifyjs \
+            git-core \
+            gcc-multilib \
+            p7zip \
+            p7zip-full \
+            msmtp \
+            libssl-dev \
+            texinfo \
+            libglib2.0-dev \
+            xmlto \
+            qemu-utils \
+            upx \
+            libelf-dev \
+            autoconf \
+            automake \
+            libtool \
+            autopoint \
+            device-tree-compiler \
+            g++-multilib \
+            antlr3 \
+            gperf \
+            wget \
+            curl \
+            swig \
+            rsync
+          git clone https://github.com/Lenyu2020/openwrt-update-script openwrt-update-script
+
+      - name: 开启 SSH 连接
+        uses: P3TERX/ssh2actions@main
+
+      - name : 上传编译文件
+        uses: actions/upload-artifact@master
+        with:
+          name: OpenWRT_firmware
+          path: /home/runner/build_dist/
+
+      - name: 移除旧的编译文件
+        uses: c-hive/gha-remove-artifacts@v1.2.0
+        with:
+          age: '1 day'
+          skip-recent: 5
