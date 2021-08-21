@@ -1,9 +1,9 @@
-name: 自动构建编译OpenWRT
+name: 构建编译 OpenWRT
 
 on: workflow_dispatch
 
 jobs:
-  自动构建编译OpenWRT:
+  Build_OpenWRT:
     runs-on: ubuntu-latest
 
     steps:
